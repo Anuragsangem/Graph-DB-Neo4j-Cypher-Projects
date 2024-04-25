@@ -1,4 +1,4 @@
-### Flight Data Import and Analysis in Neo4j
+### Flight Data Analysis in Neo4j
 #### Introduction: 
 This project demonstrates how to import flight data from a CSV file into Neo4j using Cypher queries. The data includes information about flights, airports, and connections between them.
 
