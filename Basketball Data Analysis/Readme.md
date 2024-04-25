@@ -1,8 +1,8 @@
-Basketball Data Analysis in Neo4j
-Introduction
+### Basketball Data Analysis in Neo4j
+#### Introduction
 This project involves importing and analyzing basketball data using Neo4j and Cypher queries. The dataset includes information about players, coaches, teams, and their relationships.
 
-Analysis Tasks
+#### Analysis Tasks
 After loading the data, you can perform various analysis tasks:
 
 1. Retrieve player details, including names, heights, and other relevant information.
