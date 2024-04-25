@@ -5,7 +5,7 @@ This project demonstrates how to import flight data from a CSV file into Neo4j u
 
 #### Instructions :
 1. Load CSV and Create Nodes/ConstraintsCreate nodes for airports and flights and set constraints on unique properties.
-2. Import Nodes and RelationshipsImport nodes for flights and airports and create relationships between them.
+2. Import Nodes and relationships import nodes for flights and airports and create relationships between them.
 3. Query Flights CountRetrieve the total number of flights in the database.
 4. Check SchemaDisplay the database schema for visualization.
 5. Profiling QueryProfile a query to find flights between specific airports on a given date.
