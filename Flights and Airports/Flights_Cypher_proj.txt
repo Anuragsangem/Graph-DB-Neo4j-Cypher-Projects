@@ -1,0 +1,73 @@
+
+LOAD CSV WITH HEADERS FROM 'file:///Users/Anurag/Documents/flights_10k.csv' AS row
+RETURN row
+LIMIT 5
+
+
+// Create nodes and constraints
+
+CREATE CONSTRAINT FOR (a:Airport)
+REQUIRE a.code IS UNIQUE;
+CREATE CONSTRAINT FOR (f:Flight)
+REQUIRE f.id IS UNIQUE;
+
+
+// Import nodes and relationships
+// creates nodes with the Airport  label for the origin (Origin column)  and destination (Dest column)  airports if they don’t already exist
+
+// creates nodes with the Flight  label for flights if they don’t already exist. Here we combine several columns to create the FlightIdentifier field. We invent our own flightIdentifier  as there isn’t one in the dataset
+
+// creates an ORIGIN  relationship between the origin airport and the flight
+
+// creates a DESTINATION  relationship between the destination airport and the flight
+
+LOAD CSV WITH HEADERS FROM "file:///Users/Anurag/Documents/flights_10k.csv" AS row 
+MERGE (origin:Airport {code: row.Origin})
+MERGE (destination:Airport {code: row.Dest})
+WITH row.UniqueCarrier + row.FlightNum + "_" + row.Year + "-" + row.Month + "-" + row.DayofMonth + "_" + row.Origin + "_" + row.Dest AS flightIdentifier, row, origin, destination
+MERGE (flight:Flight { id: flightIdentifier })
+ON CREATE SET flight.date = row.Year + "-" + row.Month + "-" + row.DayofMonth,
+              flight.airline = row.UniqueCarrier, flight.number = row.FlightNum, flight.departure = row.CRSDepTime,
+              flight.arrival = row.CRSArrTime, flight.distance = row.Distance, flight.cancelled = row.Cancelled
+MERGE (flight)-[:ORIGIN]->(origin)
+MERGE (flight)-[:DESTINATION]->(destination) 
+
+
+// How many flights do we have in the database?
+
+MATCH (:Flight)
+RETURN count(*)
+
+
+// Check schema
+
+call db.schema.visualization()
+
+
+// Profiling queries
+
+PROFILE
+MATCH path = (origin:Airport {code: "LAS"})<-[:ORIGIN]-(flight:Flight)-[:DESTINATION]->(destination:Airport {code: "MDW"})
+WHERE flight.date = "2008-1-3"
+RETURN path
+
+// Add a new relationship
+
+:auto LOAD CSV WITH HEADERS FROM "file:///Users/Anurag/Documents/flights_10k.csv" AS row
+MERGE (origin)-[connection:CONNECTED_TO {
+  airline: row.UniqueCarrier,
+  flightNumber: row.FlightNum,
+  date: toInteger(row.Year) + "-" + toInteger(row.Month) + "-" + toInteger(row.DayofMonth)}]->(destination)
+ON CREATE SET connection.departure = toInteger(row.CRSDepTime), connection.arrival = toInteger(row.CRSArrTime)
+
+
+// Count Connections
+
+MATCH ()-[:CONNECTED_TO]->()
+RETURN COUNT(*)
+
+// Finding flights between Los Angeles and Chicago Midway International on the date "2008-1-3"
+
+MATCH path = (origin:Airport {code: "LAS"})<-[:ORIGIN]-(flight:Flight)-[:DESTINATION]->(destination:Airport {code: "MDW"})
+WHERE flight.date = "2008-1-3"
+RETURN path
