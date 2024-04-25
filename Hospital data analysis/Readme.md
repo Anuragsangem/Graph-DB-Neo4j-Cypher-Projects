@@ -1,4 +1,6 @@
-Objective: Develop a Neo4j database system for analyzing hospital data extracted from a CSV file.
+### README.md
+
+#### Objective: Develop a Neo4j database system for analyzing hospital data extracted from a CSV file.
 
 Description: This project aims to create a Neo4j database system to store and analyze hospital information extracted from a CSV file (`HospitalGeneralInformation.csv`). The dataset contains general information about hospitals such as their names, addresses, phone numbers, services provided, and performance ratings.
 
@@ -11,7 +13,7 @@ Features:
 6. Queries: Develop Cypher queries to retrieve insights from the hospital data, such as the number of hospitals per city, zip code, or street, and identifying hospitals with specific attributes like emergency services.
 7. Documentation: Provide clear documentation including a README file to guide users on how to use and understand the database system.
 
-### README.md
+
 
 #### Hospital Database System
 
